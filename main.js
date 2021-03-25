@@ -7,13 +7,13 @@ let auth,
     password;
 
 console.log("Using NICE DCV Web Client SDK version " + dcv.version.versionStr);
-//document.addEventListener('DOMContentLoaded', main);
+document.addEventListener('DOMContentLoaded', main);
 
 function main () {
     console.log("Setting log level to INFO");
     dcv.setLogLevel(dcv.LogLevel.INFO);
 
-    //serverUrl = "https://your-dcv-server-url:port/";
+    serverUrl = localStorage.getItem('url');
 
     console.log("Starting authentication with", serverUrl);
     
@@ -30,7 +30,7 @@ function main () {
 function onPromptCredentials(auth, challenge) {
     // Let's check if in challege we have a username and password request
     if (challengeHasField(challenge, "username") && challengeHasField(challenge, "password")) {
-        auth.sendCredentials({username: username, password: password})
+        auth.sendCredentials({username: localStorage.getItem('username'), password: localStorage.getItem('password')})
     } else {
         // Challenge is requesting something else...
     }
