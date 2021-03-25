@@ -109,7 +109,10 @@ document.querySelector('#record-button').addEventListener('click', e => {
         isRecording = false;
         e.target.innerHTML = "Record";
 
-        document.querySelector('#steps').innerHTML = JSON.stringify(events);
+        document.querySelector('#steps').innerHTML = "";
+        events.forEach(eventitem => {
+            document.querySelector('#steps').innerHTML += eventitem["time"] + ": " + eventitem["type"] + " - " + JSON.stringify(eventitem["event"]);
+        });
     } else {
         isRecording = true;
         e.target.innerHTML = "Stop Recording";
