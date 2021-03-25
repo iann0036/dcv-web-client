@@ -91,7 +91,7 @@ function popEvent() {
         let ev = new KeyboardEvent(eventitem["type"], {
             bubbles: true,
             cancelable: true,
-            key: String.fromCharCode(eventitem["event"]["keycode"]),
+            key: String.fromCharCode(eventitem["event"]["keycode"]).toLowerCase(),
             keyCode: eventitem["event"]["keycode"],
             which: eventitem["event"]["keycode"]
         });
