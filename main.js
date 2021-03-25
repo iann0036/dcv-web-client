@@ -79,7 +79,20 @@ var events = [];
 function popEvent() {
     let eventitem = events.shift();
 
-    let ev = new Event(eventitem["type"], eventitem["event"]);
+    if (["mousemove", "mousedown", "mouseup"].includes(eventitem["type"])) {
+        let ev = new MouseEvent(eventitem["type"], {
+            bubbles: true,
+            cancelable: true,
+            clientX: eventitem["event"]["x"],
+            clientY: eventitem["event"]["y"]
+        });
+    } else if (["keydown", "keyup"].includes(eventitem["type"])) {
+        let ev = new KeyboardEvent(eventitem["type"], {
+            code: eventitem["event"]["keycode"]
+        });
+    } else {
+        let ev = new Event(eventitem["type"], eventitem["event"]);
+    }
 
     document.querySelector('#dcv-display').dispatchEvent(ev);
 
@@ -98,7 +111,7 @@ document.querySelector('#record-button').addEventListener('click', e => {
         document.querySelector('#steps').innerHTML = JSON.stringify(events);
     } else {
         isRecording = true;
-        e.target.innerHTML = "Recording...";
+        e.target.innerHTML = "Stop Recording";
     }
 });
 
@@ -110,14 +123,67 @@ document.querySelector('#replay-button').addEventListener('click', e => {
     }
 });
 
-for (var eventtype of ['mousemove', 'mousedown', 'mouseup', 'keydown', 'keyup']) {
-    document.querySelector('#dcv-display').addEventListener(eventtype, e => {
-        if (isRecording) {
-            events.push({
-                'type': eventtype,
-                'event': e,
-                'time': new Date()
-            });
-        }
-    });
-}
+// events
+
+document.querySelector('#dcv-display').addEventListener('mousemove', e => {
+    if (isRecording) {
+        events.push({
+            'type': 'mousemove',
+            'event': {
+                'x': e.offsetX,
+                'y': e.offsetY,
+            },
+            'time': new Date()
+        });
+    }
+});
+
+document.querySelector('#dcv-display').addEventListener('mousedown', e => {
+    if (isRecording) {
+        events.push({
+            'type': 'mousedown',
+            'event': {
+                'x': e.offsetX,
+                'y': e.offsetY,
+            },
+            'time': new Date()
+        });
+    }
+});
+
+document.querySelector('#dcv-display').addEventListener('mouseup', e => {
+    if (isRecording) {
+        events.push({
+            'type': 'mouseup',
+            'event': {
+                'x': e.offsetX,
+                'y': e.offsetY,
+            },
+            'time': new Date()
+        });
+    }
+});
+
+document.querySelector('#dcv-display').addEventListener('keydown', e => {
+    if (isRecording) {
+        events.push({
+            'type': 'keydown',
+            'event': {
+                'keycode': e.keyCode
+            },
+            'time': new Date()
+        });
+    }
+});
+
+document.querySelector('#dcv-display').addEventListener('keyup', e => {
+    if (isRecording) {
+        events.push({
+            'type': 'keyup',
+            'event': {
+                'keycode': e.keyCode
+            },
+            'time': new Date()
+        });
+    }
+});
