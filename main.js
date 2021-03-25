@@ -86,15 +86,16 @@ function popEvent() {
             clientX: eventitem["event"]["x"],
             clientY: eventitem["event"]["y"]
         });
+        document.querySelector('#dcv-display').dispatchEvent(ev);
     } else if (["keydown", "keyup"].includes(eventitem["type"])) {
         let ev = new KeyboardEvent(eventitem["type"], {
             code: eventitem["event"]["keycode"]
         });
+        connection.sendKeyboardEvent(ev);
     } else {
         let ev = new Event(eventitem["type"], eventitem["event"]);
+        document.querySelector('#dcv-display').dispatchEvent(ev);
     }
-
-    document.querySelector('#dcv-display').dispatchEvent(ev);
 
     if (events.length) {
         setTimeout(popEvent, events[0]["time"].getUTCMilliseconds() - eventitem["time"].getUTCMilliseconds());
