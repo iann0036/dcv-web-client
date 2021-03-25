@@ -112,7 +112,7 @@ document.querySelector('#record-button').addEventListener('click', e => {
 
         document.querySelector('#steps').innerHTML = "";
         events.forEach(eventitem => {
-            document.querySelector('#steps').innerHTML += eventitem["time"] + ": " + eventitem["type"] + " - " + JSON.stringify(eventitem["event"]);
+            document.querySelector('#steps').innerHTML += eventitem["time"] + ": " + eventitem["type"] + " - " + JSON.stringify(eventitem["event"]) + "\n";
         });
     } else {
         isRecording = true;
