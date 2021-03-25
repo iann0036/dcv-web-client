@@ -70,3 +70,54 @@ function connect (sessionId, authToken) {
         console.log("Connection failed with error " + error.message);
     });
 }
+
+// Recorder
+
+var isRecording = false;
+var events = [];
+
+function popEvent() {
+    let eventitem = events.shift();
+
+    let ev = new Event(eventitem["type"], eventitem["event"]);
+
+    document.querySelector('#dcv-display').dispatchEvent(ev);
+
+    if (events.length) {
+        setTimeout(popEvent, events[0]["time"].getUTCMilliseconds() - eventitem["time"].getUTCMilliseconds());
+    } else {
+        document.querySelector('#replay-button').innerHTML = "Play";
+    }
+}
+
+document.querySelector('#record-button').addEventListener('click', e => {
+    if (isRecording) {
+        isRecording = false;
+        e.target.innerHTML = "Record";
+
+        document.querySelector('#steps').innerHTML = JSON.stringify(events);
+    } else {
+        isRecording = true;
+        e.target.innerHTML = "Recording...";
+    }
+});
+
+document.querySelector('#replay-button').addEventListener('click', e => {
+    if (events.length) {
+        e.target.innerHTML = "Playing...";
+
+        popEvent();
+    }
+});
+
+for (var eventtype of ['mousemove', 'mousedown', 'mouseup', 'keydown', 'keyup']) {
+    document.querySelector('#dcv-display').addEventListener(eventtype, e => {
+        if (isRecording) {
+            events.push({
+                'type': eventtype,
+                'event': e,
+                'time': new Date()
+            });
+        }
+    });
+}
