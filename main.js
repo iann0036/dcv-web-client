@@ -95,8 +95,8 @@ function popEvent() {
             keyCode: eventitem["event"]["keycode"],
             which: eventitem["event"]["keycode"]
         });
-        //connection.sendKeyboardEvent(ev);
-        document.querySelector('#dcv-display').dispatchEvent(ev);
+        connection.sendKeyboardEvent(ev);
+        //document.querySelector('#dcv-display').dispatchEvent(ev);
     } else {
         let ev = new Event(eventitem["type"], eventitem["event"]);
         document.querySelector('#dcv-display').dispatchEvent(ev);
