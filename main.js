@@ -32,7 +32,8 @@ function onPromptCredentials(auth, challenge) {
     if (challengeHasField(challenge, "username") && challengeHasField(challenge, "password")) {
         auth.sendCredentials({username: localStorage.getItem('username'), password: localStorage.getItem('password')})
     } else {
-        // Challenge is requesting something else...
+        console.warn("Challenge requires:");
+        console.log(challenge);
     }
 }
 
