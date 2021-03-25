@@ -89,7 +89,11 @@ function popEvent() {
         document.querySelector('#dcv-display').dispatchEvent(ev);
     } else if (["keydown", "keyup"].includes(eventitem["type"])) {
         let ev = new KeyboardEvent(eventitem["type"], {
-            code: eventitem["event"]["keycode"]
+            bubbles: true,
+            cancelable: true,
+            key: String.fromCharCode(eventitem["event"]["keycode"]),
+            keyCode: eventitem["event"]["keycode"],
+            which: eventitem["event"]["keycode"]
         });
         //connection.sendKeyboardEvent(ev);
         document.querySelector('#dcv-display').dispatchEvent(ev);
